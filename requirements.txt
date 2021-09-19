@@ -3,4 +3,10 @@ pylint
 coverage
 pytest-cov
 decorators
-mock
+mock~=4.0.3
+
+pip~=21.2.4
+py~=1.10.0
+setuptools~=57.4.0
+google~=3.0.0
+google-api-python-client
