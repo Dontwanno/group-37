@@ -1,0 +1,154 @@
+﻿Functional requirements
+
+
+Planning Algorithm:
+Must have:
+The tasks given by the user must be assigned time frames during the following day(s). 
+
+
+Should have:
+The weather should be taken into account with organization of the tasks given by the user. 
+
+
+The software should have the option to take a day off.
+
+
+The information from google calendar should be put in the schedule and the schedule should be adapted accordingly.
+
+
+Could have:
+
+
+User interaction:
+Must have:
+The user must be able to enter a list of tasks.
+
+
+The user must be able to give his start and end time of the day.
+
+
+
+
+Should have:
+The user should be able to create their own priorities for their tasks.
+
+
+The user should be able to mark a task as finished.
+
+
+The user should be provided with a template for primary themes of activities.
+
+
+The user should be able to see a settings screen.
+
+
+The user should be able to change which Google Calendar is accessed in the settings screen.
+
+
+The software should include a break button which takes your current activity and reschedules it based on the organization feature mentioned above.
+
+
+The user should not have to choose what task is planned at a certain time.
+
+
+Could have:
+
+
+The software could have a graphical interface which allows the user to see their schedule.
+
+
+
+
+
+
+
+
+
+
+System feedback:
+Must have:
+The software must have a console text-based GUI. 
+
+
+Should have:
+
+
+
+
+Could have:
+The user could see a startup screen.
+
+
+The user could see a joke when opening the app. 
+
+
+The user could see a compliment.
+
+
+The software could have in-app currency.
+
+
+The software could have achievements
+
+
+The user could be awarded in-app currency if he/she finished tasks.
+
+
+The software could give achievements to the user if he/she has the requirements for the achievement 
+
+
+The software could be able to see if a lifestyle has unhealthy habits (predefined, easy algorithm)
+
+
+The user could receive tips if the software sees that improvements can be made in his lifestyle
+
+
+Won’t have
+
+
+The user will not be able to see their planned day in google calendar 
+
+
+        
+
+
+
+
+
+
+
+
+Getting online information:
+Must have:
+
+
+Should have:
+
+
+The software should be able to get weather data from the weather forecast.
+
+
+The software should be able to get information from google calendar.
+
+
+The software should be able to log in to google calendar.
+
+
+Could have:
+
+
+Non-functional requirements
+Must have:
+
+
+Should have:
+The entered tasks should be stored.
+
+
+The software should be able to plan a day in less than 1 minute.
+.
+User data/input should not be shared in any way.
+
+
+Could have:
+The local memory files could not take up more than 100MB.
