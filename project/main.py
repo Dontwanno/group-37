@@ -11,7 +11,7 @@ def main():
     # Display list of tasks:
     #       List of tasks format (for now): [startTime][endTime][name]
     #                                   eg: [1500][1600][meeting]
-    temporary_list = [[845, 1030], [1045, 1230], ['Walk my dog', 'Meeting with SEM boys']]
+    temporary_list = [[845, 1045, 1345, 1545], [1030, 1230, 1530, 1800], ['Walk my dog', 'Meeting with SEM boys', 'Do my homework', 'Crying session']]
     displaySchedule(temporary_list)
 
 
