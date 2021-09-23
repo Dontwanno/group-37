@@ -1,10 +1,12 @@
 from project.displaySchedule import displaySchedule
+from console_user_interface import request_user, request_calendar
 from user_input import new_task
 
 
 def main():
     # Request user to enter tasks:
-
+    request_user()
+    request_calendar()
     # Store list of tasks:
 
     # Extract list of tasks:
