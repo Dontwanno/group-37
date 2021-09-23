@@ -1,5 +1,3 @@
-task_list = [[], [], []]
-
 def new_task(task_list):
     """
     Allows user to add a new task
@@ -13,10 +11,8 @@ def new_task(task_list):
         new_task_list[2].append(input("Description: "))
         new_task_list[0].append(int(input("Start time: ")))
         new_task_list[1].append(int(input("End time: ")))
-        if new_task_list[0][-1] > 2400 or new_task_list[1][-1] > 2400:
+        if new_task_list[0][-1] > 2400 or new_task_list[1] > 2400:
             raise ValueError
-        elif new_task_list[-1][-1] == "":
-            return task_list
     except ValueError:
         # if input was not finished, give message and return old task list
         print("Time must be valid and in integer format e.g. 8:45 = 845, 20:15 = 2015.")
@@ -26,4 +22,5 @@ def new_task(task_list):
     print("Task stored successfully")
     return new_task_list
 
-
+task_list = [[],[],[]]
+new_task(task_list)
