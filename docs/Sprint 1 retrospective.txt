@@ -1,0 +1,27 @@
+Retrospective
+
+Went well:
+
+Getting Git working
+Even a could have tasks were completed
+The interface looks nice for a console interface
+We got a better idea of how to plan tasks
+We got a better idea of how coding with git and cross requirements limit us
+
+Needs improvement:
+
+The difficulty points assigned were not accurate
+Google calendar was hardest
+All the other tasks were ~ the same difficulty
+Tasks and cross requirements were not defined clearly enough
+We did not think enough about the coding process in the planning
+The tasks were not all completed in time
+Everyone did not have the same expectation of the shippable product
+
+Next steps:
+
+Define requirements more elaborately (including inputs, outputs)
+Define cross requirements between tasks
+Be more careful and test before pushing
+Don’t merge carelessly
+For now, we don’t give difficulty ratings to tasks
