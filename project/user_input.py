@@ -22,5 +22,3 @@ def new_task(task_list):
     print("Task stored successfully")
     return new_task_list
 
-task_list = [[],[],[]]
-new_task(task_list)
