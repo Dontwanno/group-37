@@ -15,7 +15,7 @@ from google.oauth2.credentials import Credentials
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
 
-def main():
+def get_google_calander():
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -42,13 +42,19 @@ def main():
                                           maxResults=10, singleEvents=True,
                                           orderBy='startTime').execute()
     events = events_result.get('items', [])
-
+    task_list = [[], [], []]
     if not events:
         print('No upcoming events found.')
     for event in events:
+        # Put starttime, endtime and name in list
         start = event['start'].get('dateTime', event['start'].get('date'))
-        print(start, event['summary'])
+        end = event['end'].get('dateTime', event['end'].get('date'))
+
+        task_list[0].append(int(start[11:13]+ start[14:16]))
+        task_list[1].append(int(end[11:13]+end[14:16]))
+        task_list[2].append(event['summary'])
+
+    return task_list
 
 
-if __name__ == '__main__':
-    main()
+get_google_calander()
