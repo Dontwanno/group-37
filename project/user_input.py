@@ -22,7 +22,7 @@ def new_task(task_list):
     # If new task is before the latest task, insert it on the correct spot
     if entered_task[0] < task_list[0][len(task_list[0])-1]:
         i = 0
-        while entered_task[0] > task_list[i][0]:
+        while entered_task[0] > task_list[0][i]:
             i += 1
 
         new_task_list[0].insert(i, entered_task[0])
