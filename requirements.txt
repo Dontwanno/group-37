@@ -9,4 +9,6 @@ pip~=21.2.4
 py~=1.10.0
 setuptools~=57.4.0
 google~=3.0.0
-google-api-python-client
+google-auth-httplib2==0.1.0
+google-auth==2.0.0
+google-api-python-client==2.22.0
