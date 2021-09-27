@@ -5,8 +5,8 @@ from user_input import new_task
 
 def main():
     # Request user to enter tasks:
-    request_user()
-    request_calendar()
+    #request_user()
+    #request_calendar()
     # Store list of tasks:
 
     # Extract list of tasks:
