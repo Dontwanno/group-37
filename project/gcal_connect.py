@@ -15,7 +15,7 @@ from google.oauth2.credentials import Credentials
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
 
-def get_google_calander():
+def get_google_calander(task_list):
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -37,24 +37,22 @@ def get_google_calander():
 
     # Call the Calendar API and get the info you need
     now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
-    print('Getting the upcoming 10 events')
+    end_time = datetime.date.today().isoformat() + 'T23:59:59.00Z'
+    print('Getting the tasks of today')
     events_result = service.events().list(calendarId='primary', timeMin=now,
-                                          maxResults=10, singleEvents=True,
+                                          timeMax=end_time, singleEvents=True,
                                           orderBy='startTime').execute()
     events = events_result.get('items', [])
-    task_list = [[], [], []]
     if not events:
-        print('No upcoming events found.')
+        print('No tasks planned for today')
     for event in events:
         # Put starttime, endtime and name in list
         start = event['start'].get('dateTime', event['start'].get('date'))
         end = event['end'].get('dateTime', event['end'].get('date'))
 
-        task_list[0].append(int(start[11:13]+ start[14:16]))
-        task_list[1].append(int(end[11:13]+end[14:16]))
+        task_list[0].append(int(start[11:13] + start[14:16]))
+        task_list[1].append(int(end[11:13] + end[14:16]))
         task_list[2].append(event['summary'])
+        print("added " + event['summary'] + " to your WorkValve calander")
 
     return task_list
-
-
-get_google_calander()
