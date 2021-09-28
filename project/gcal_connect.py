@@ -5,6 +5,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
+from classes import Task, TaskList
 
 # For the testing purposes of this project there is a testing gmail workspace
 # Mail: workvalvesem@gmail.com
@@ -50,9 +51,11 @@ def get_google_calander(task_list):
         start = event['start'].get('dateTime', event['start'].get('date'))
         end = event['end'].get('dateTime', event['end'].get('date'))
 
-        task_list[0].append(int(start[11:13] + start[14:16]))
-        task_list[1].append(int(end[11:13] + end[14:16]))
-        task_list[2].append(event['summary'])
-        print("added " + event['summary'] + " to your WorkValve calander")
+        start_time = int(start[11:13] + start[14:16])
+        end_time = int(end[11:13] + end[14:16])
+        description = event['summary']
+        task_list.add_task(Task(start_time, end_time, description, True))
+
+        print("Added " + event['summary'] + " to your WorkValve calander")
 
     return task_list
