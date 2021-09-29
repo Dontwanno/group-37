@@ -13,7 +13,7 @@ def set_start_end_time(start_end):
         if answer == "yes":
             return
         elif answer == "no":
-            set_start_end_time()
+            set_start_end_time(start_end)
         else:
             print("Please enter yes or no.")
 

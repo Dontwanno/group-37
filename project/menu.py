@@ -12,13 +12,13 @@
 # python_version  :3.8.0
 # =======================================================================
 import sys, os, signal, colorama
-from project.displaySchedule import displaySchedule
+from displaySchedule import displaySchedule
 from user_input import new_task
 from classes import Task, TaskList
 import gcal_connect
 from start_end_time import set_start_end_time
 
-start_end = [1, 2]
+start_end = [1000, 2000]
 task_list = TaskList()
 task_list.add_task(Task(845, 1030, "Walk my dog", False))
 task_list.add_task(Task(1030, 1345, "Meeting with SEM boys", False))
@@ -262,7 +262,10 @@ class settings(menu_template):
         set_start_end_time(start_end)
 
     def method_2(self):
-        print(start_end)
+        start_time = str(start_end[0])
+        end_time = str(start_end[1])
+        print(f"Your start time is: {start_time[:2]}:{start_time[2:]} and your end time is:"
+          f" {str(end_time)[:2]}:{end_time[2:]}")
 
 
 # =======================
@@ -329,9 +332,9 @@ class menu_handler:
 
 
 # Main Program
-if __name__ == "__main__":
-    x = menu_handler()
-    signal.signal(signal.SIGINT, sigint_handler)
-    while True:
-        # os.system('cls')
-        x.menuExecution()
+# if __name__ == "__main__":
+x = menu_handler()
+signal.signal(signal.SIGINT, sigint_handler)
+while True:
+    # os.system('cls')
+    x.menuExecution()
