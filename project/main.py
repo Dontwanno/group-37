@@ -1,14 +1,11 @@
-from project.displaySchedule import display_schedule
-from console_user_interface import request_user, request_calendar
-from user_input import new_task
 from classes import Task, TaskList
+from user_input import new_task
 import gcal_connect
+from project.displaySchedule import display_schedule
 
 
 def main():
     # Request user to enter tasks:
-    #request_user()
-    #request_calendar()
     # Store list of tasks:
 
     # Extract list of tasks:
@@ -28,4 +25,4 @@ def main():
 
 
 if __name__ == '__main__':
-        main()
+    main()
