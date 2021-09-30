@@ -12,7 +12,7 @@
 # python_version  :3.8.0
 # =======================================================================
 import sys, os, signal, colorama
-from displaySchedule import displaySchedule
+from displaySchedule import display_schedule
 from user_input import new_task
 from classes import Task, TaskList
 import gcal_connect
@@ -253,7 +253,7 @@ class add_tasks(menu_template):
 
 class view_tasks(menu_template):
     def method_1(self):
-        displaySchedule(task_list)
+        display_schedule(task_list)
         return
 
 
