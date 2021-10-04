@@ -58,7 +58,7 @@ class TaskList:
         except TypeError:
             print("Task is not of class Task.")
 
-    def fit_task(self, new_task):
+    def fit_task(self, new_task, start_end):
         """
         Adds a task to the TaskList object's task_list
         :param new_task: The new task of class Task
@@ -71,13 +71,16 @@ class TaskList:
 
                 # Determine spot to fit task
                 # For now, workday hardcoded from 6am -> 7pm
-                workday = [800, 1900]
+                # print(workday[0])
+                # workday = [800, 1900]
                 free_time_list = [[]]
-                free_time_list[0] = [workday[0], workday[1]]
-                print(str(len(free_time_list)))
+                free_time_list[0] = [start_end[0], start_end[1]]
+                # print(str(len(free_time_list)))
                 for task in self.get_task_list():
-                    #print(task.get_start_time())
-                    #remove_overlap(task, )
+                    # Remove all possible times with tasks from free times
+                    # If a task partially overlaps with a free time slot, the free time slot will be shortened
+                    # If a task fully overlaps the free time slot will be removed
+                    # If a task fits inside a free time slot, the free time slot will be split up
 
                     for slot in free_time_list:
                         #Check if starttime fits in interval
@@ -95,22 +98,23 @@ class TaskList:
                             slot[1] = task.get_start_time()
                             free_time_list.append([task.get_end_time(), tmp_free_slot_endtime])
                             #print('Appended free time slot!')
-                        elif task.get_start_time() < task.get_end_time() <= slot[0]:
-                            # Continue, no overlap
-                            print("Task before slot, no overlap!")
-                        elif slot[1] <= task.get_start_time() < task.get_end_time():
-                            # Continue, no overlap
-                            print("Task after slot, no overlap!")
+                        # elif task.get_start_time() < task.get_end_time() <= slot[0]:
+                        #     # Continue, no overlap
+                        #     #print("Task before slot, no overlap!")
+                        # elif slot[1] <= task.get_start_time() < task.get_end_time():
+                        #     # Continue, no overlap
+                        #     #print("Task after slot, no overlap!")
                         else:
                             # Remove free time slot
                             #del free_time_list[0]
                             free_time_list.remove(slot)
                             #print('Removed free time slot!')
 
-                i = 0
-                while i < len(free_time_list):
-                    print(str(free_time_list[i][0]) + " -> " + str(free_time_list[i][1]))
-                    i += 1
+                # The following part prints all free time slots
+                # i = 0
+                # while i < len(free_time_list):
+                #     print(str(free_time_list[i][0]) + " -> " + str(free_time_list[i][1]))
+                #     i += 1
 
                 found_slot = False
                 i = 0
@@ -127,11 +131,10 @@ class TaskList:
                         time_diff = hour_diff * 100 + min_diff
                     else:
                         time_diff = (hour_diff - 1) * 100 + min_diff + 60
-                    print("Length = " + str(time_diff))
-                    # slot_length[i] = time_diff
+                    # print("Length = " + str(time_diff))
+                    # Check if task fits in this slot
                     if time_diff >= task_length:
-                        # Fit task here!!
-                        #print("Task length = " + str(task_length))
+                        # Task fits here!
                         if len(str(task_length)) > 2:
                             task_length_hour = int(str(task_length)[0: len(str(task_length)) - 2])
                         else:
@@ -149,10 +152,10 @@ class TaskList:
                         task_end_time = (task_end_hour * 100) + task_end_min
                         fitted_task = Task(slot[0], task_end_time, new_task.get_description(), new_task.get_from_g_cal())
 
-                        print(fitted_task.get_start_time())
-                        print(fitted_task.get_end_time())
-                        print(fitted_task.get_description())
-                        print(fitted_task.get_from_g_cal())
+                        # print(fitted_task.get_start_time())
+                        # print(fitted_task.get_end_time())
+                        # print(fitted_task.get_description())
+                        # print(fitted_task.get_from_g_cal())
 
                         found_slot = True
 

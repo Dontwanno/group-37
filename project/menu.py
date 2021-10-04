@@ -11,19 +11,21 @@
 #                 of main_menu and view_tasks classes at BACKEND section.
 # python_version  :3.8.0
 # =======================================================================
-import sys, os, signal, colorama
-from displaySchedule import display_schedule
-from user_input import new_task
+import sys, colorama
+from ui import new_task, display_schedule, set_start_end_time
 from classes import Task, TaskList
-import gcal_connect
-from start_end_time import set_start_end_time
+from apis import get_google_calendar
 
-start_end = [1000, 2000]
 task_list = TaskList()
+# Get current tasks from Google
+# task_list = get_google_calendar(task_list)
+start_end = [1000, 2000]
+
 task_list.add_task(Task(845, 1030, "Walk my dog", False))
 task_list.add_task(Task(1030, 1345, "Meeting with SEM boys", False))
 task_list.add_task(Task(1345, 1530, "Do my homework", False))
 task_list.add_task(Task(1545, 1800, "Crying session", False))
+
 
 colorama.init()  # Color init for Windows
 
@@ -244,7 +246,7 @@ class main_menu(menu_template):
 
 class add_tasks(menu_template):
     def method_1(self):
-        new_task(task_list)
+        new_task(task_list, start_end)
         return
 
     def method_2(self):
@@ -329,12 +331,3 @@ class menu_handler:
             self.m3.action(ch)
         elif type == 3:
             self.m4.action(ch)
-
-
-# Main Program
-# if __name__ == "__main__":
-x = menu_handler()
-signal.signal(signal.SIGINT, sigint_handler)
-while True:
-    # os.system('cls')
-    x.menuExecution()
