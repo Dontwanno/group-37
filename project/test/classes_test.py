@@ -32,6 +32,3 @@ def test_task_list_add_task_exception():
     test_list = TaskList()
     test_list.add_task("test")
     assert len(test_list.get_task_list()) == 0
-
-
-

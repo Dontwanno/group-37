@@ -72,11 +72,9 @@ class TaskList:
 
                 # Determine spot to fit task
                 # For now, workday hardcoded from 6am -> 7pm
-                # print(workday[0])
                 # workday = [800, 1900]
                 free_time_list = [[]]
                 free_time_list[0] = [start_end[0], start_end[1]]
-                # print(str(len(free_time_list)))
                 for task in self.get_task_list():
                     # Remove all possible times with tasks from free times
                     # If a task partially overlaps with a free time slot, the free time slot will be shortened
@@ -88,7 +86,6 @@ class TaskList:
                         if slot[0] <= task.get_start_time() < slot[1] <= task.get_end_time():
                             # Shorten free time slot
                             slot[1] = task.get_start_time()
-                            #print('Removed last part free time slot!')
                         elif task.get_start_time() <= slot[0] < task.get_end_time() < slot[1]:
                             # Shorten free time slot
                             slot[0] = task.get_end_time()
