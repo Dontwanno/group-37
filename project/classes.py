@@ -60,8 +60,9 @@ class TaskList:
 
     def fit_task(self, new_task, start_end):
         """
-        Adds a task to the TaskList object's task_list
+        Adds a task to the TaskList object's task_list, in the correct time
         :param new_task: The new task of class Task
+        :param start_end: List of start [0] and end [1] times
         """
         try:
             if isinstance(new_task, Task):
