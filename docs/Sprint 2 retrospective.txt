@@ -1,0 +1,21 @@
+Retrospective 2
+
+Went well:
+
+Most of the tasks are finished
+
+There was a shippable product at the end of the sprint
+Most tasks were finished on time
+
+Needs improvement:
+
+Menu is not in the main file yet
+Some errors in the code
+For those concerned (implement testing)
+Too many files
+
+Next step:
+
+Testing
+Make menu and main one thing
+Merge some files
