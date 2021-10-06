@@ -11,17 +11,16 @@
 #                 of main_menu and view_tasks classes at BACKEND section.
 # python_version  :3.8.0
 # =======================================================================
-import sys
-import signal
-import colorama
 
-from classes import TaskList
-from displaySchedule import display_schedule
-from start_end_time import set_start_end_time
-from user_input import new_task
+import sys, colorama
+from ui import new_task, remove_task, display_schedule, set_start_end_time
+from classes import Task, TaskList
+from apis import get_google_calendar
 
-start_end = [1000, 2000]
 task_list = TaskList()
+# Get current tasks from Google
+# task_list = get_google_calendar(task_list)
+start_end = [1000, 2000]
 
 
 colorama.init()  # Color init for Windows
@@ -57,7 +56,7 @@ main_menu_colors = {
 }
 main_menu_options = {
     "title": "Main menu",
-    "1": "Add tasks",
+    "1": "Add/Remove tasks",
     "2": "View tasks",
     "3": "Settings",
     "0": "Quit (or use CNTRL+C)",
@@ -228,11 +227,10 @@ class MenuTemplate:
 
 
 # =======================
-#      BACKEND
+#      BACKEND (instantiation of all the different menus)
 # =======================
 
 # Create here custom actions.
-
 
 class MainMenu(MenuTemplate):
     def method_1(self):
@@ -247,9 +245,10 @@ class MainMenu(MenuTemplate):
 
 class AddTasks(MenuTemplate):
     def method_1(self):
-        new_task(task_list)
+        new_task(task_list, start_end)
 
     def method_2(self):
+        remove_task(task_list)
         return
 
     def method_3(self):
@@ -298,12 +297,3 @@ class MenuHandler:
         self.menu_dict[MenuHandler.current_menu].print_menu()
         choice = input("Please enter what you want to do: ")
         self.menu_dict[MenuHandler.current_menu].action(choice)
-
-
-# Main Program
-# if __name__ == "__main__":
-signal.signal(signal.SIGINT, sigint_handler)
-x = MenuHandler()
-while True:
-    # os.system('cls')
-    x.menu_execution()

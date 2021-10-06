@@ -180,5 +180,14 @@ class TaskList:
         except TypeError:
             print("Task is not of class Task.")
 
+    def remove_task(self, removed_task):
+        for task in self.task_list:
+            if task.description == removed_task:
+                self.task_list.remove(task)
+                print("Task successfully deleted\n")
+                break
+        else:
+            print("There are no tasks with this description\n")
+
     def get_task_list(self):
         return self.task_list

@@ -74,3 +74,31 @@ def display_schedule(task_list):
               format_int_to_time_string(temp_task_list[i].get_end_time()) + ': ' + temp_task_list[i].get_description())
     print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
     del temp_task_list
+
+
+def remove_task(task_list):
+    """
+    Allows user to remove a task
+    :param task_list: List of existing tasks, class TaskList
+    """
+    print('Would you like to remove a task?')
+    answer = None
+    while answer not in ("yes", "no"):
+        # repeat when user doesn't enter yes or no
+        answer = input("Enter yes or no: ")
+        if answer == "yes":
+            if len(task_list.task_list) != 0:
+                display_schedule(task_list)
+                removed_task = input("please enter the name of the task you would like to remove: ")
+                # remove task from task list
+                task_list.remove_task(removed_task)
+            else:
+                print("Your task list is empty")
+        elif answer == "no":
+            return
+        else:
+            print("Please enter 'yes' or 'no'")
+        return
+    # if everything went smooth, return
+    # print("Task stored successfully")
+    return
