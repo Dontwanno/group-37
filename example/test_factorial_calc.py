@@ -2,7 +2,7 @@ import unittest
 from textwrap import dedent
 
 import mock
-from project.factorial_calc import ask_factorial, calc_factorial
+from factorial_calc import ask_factorial, calc_factorial
 from contextlib import redirect_stdout
 from io import StringIO
 
