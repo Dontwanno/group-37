@@ -1,17 +1,19 @@
 class Task:
-    def __init__(self, start_time, end_time, description, from_g_cal):
+    def __init__(self, start_time, end_time, priority, description, from_g_cal):
         """
         Initializer for class Task
         :param start_time: Time when task starts, type int, format 500 = 5:00
         :param end_time: Time when task ends, type int, format 500 = 5:00
+        :param priority: Priority of the task, higher priority = higher numbers
         :param description: Description of the task, type String
         :param from_g_cal: Whether the origin of task is g cal, type bool
         """
         try:
-            if isinstance(start_time, int) and isinstance(end_time, int) and isinstance(from_g_cal, bool)\
+            if isinstance(start_time, int) and isinstance(end_time, int) and isinstance(priority, int) and isinstance(from_g_cal, bool)\
                     and 0 <= start_time < 2400 and 0 <= end_time < 2400 and isinstance(description, str):
                 self.start_time = start_time
                 self.end_time = end_time
+                self.priority = priority
                 self.description = description
                 self.from_g_cal = from_g_cal
             else:
@@ -25,6 +27,9 @@ class Task:
 
     def get_start_time(self):
         return self.start_time
+
+    def get_priority(self):
+        return self.priority
 
     def get_description(self):
         return self.description
@@ -147,10 +152,11 @@ class TaskList:
                             task_end_min -= 60
                             task_end_hour += 1
                         task_end_time = (task_end_hour * 100) + task_end_min
-                        fitted_task = Task(slot[0], task_end_time, new_task.get_description(), new_task.get_from_g_cal())
+                        fitted_task = Task(slot[0], task_end_time, new_task.get_priority(), new_task.get_description(), new_task.get_from_g_cal())
 
                         print(fitted_task.get_start_time())
                         print(fitted_task.get_end_time())
+                        print(fitted_task.get_priority())
                         print(fitted_task.get_description())
                         print(fitted_task.get_from_g_cal())
 
