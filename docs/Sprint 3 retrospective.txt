@@ -1,0 +1,16 @@
+Went well:
+Merge requests were handled better
+Architecture has been improved
+Some of the team checked pylint
+
+Needs improvement:
+Merge request can still be improved even more
+Sprint is not completely finished before the sprint-meeting (merge requests created but not merged etc)
+Pylint needs to be checked even more with every merge
+Testing needs to be done continuously by the person coding
+
+Next step:
+Assign people to check merge requests
+Daniel -> Twan -> Rick -> Pelle -> Simon -> Daniel
+Link merge requests to issues
+Test driven development
