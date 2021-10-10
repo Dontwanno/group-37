@@ -1,15 +1,15 @@
-from project.menu import menu_handler, sigint_handler
 import signal
-from classes import Task, TaskList
+from project.menu import MenuHandler, sigint_handler
+# from classes import Task, TaskList
 
 
 def main():
-    x = menu_handler()
+    handler = MenuHandler()
     signal.signal(signal.SIGINT, sigint_handler)
     while True:
         # os.system('cls')
-        x.menuExecution()
+        handler.menu_execution()
 
 
 if __name__ == '__main__':
-        main()
+    main()

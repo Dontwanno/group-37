@@ -1,4 +1,5 @@
-from classes import Task, TaskList
+from classes import Task
+# from classes import TaskList
 
 
 def new_task(task_list, start_end):
@@ -43,7 +44,8 @@ def set_start_end_time(start_end):
     print("Please enter the start and end time of your workday.\n")
     start_time = input("Start time: ")
     end_time = input("End time: ")
-    print(f"\nThe start time you entered is: {start_time[:2]}:{start_time[2:]}\nThe end time you entered is:"
+    print(f"\nThe start time you entered is:\
+{start_time[:2]}:{start_time[2:]}\nThe end time you entered is:"
           f" {end_time[:2]}:{end_time[2:]}\nAre these times correct?")
     start_end[0] = int(start_time)
     start_end[1] = int(end_time)
@@ -61,8 +63,8 @@ def set_start_end_time(start_end):
 
 def format_int_to_time_string(time_int):
     hour = str(time_int)[0: len(str(time_int)) - 2]
-    min = str(time_int)[len(str(time_int)) - 2: len(str(time_int))]
-    return hour + ':' + min
+    minutes = str(time_int)[len(str(time_int)) - 2: len(str(time_int))]
+    return hour + ':' + minutes
 
 
 def display_schedule(task_list):
@@ -71,6 +73,7 @@ def display_schedule(task_list):
     print('SCHEDULE:')
     for i in range(len(temp_task_list)):
         print('- ' + format_int_to_time_string(temp_task_list[i].get_start_time()) + ' --> ' +
-              format_int_to_time_string(temp_task_list[i].get_end_time()) + ': ' + temp_task_list[i].get_description())
+              format_int_to_time_string(temp_task_list[i].get_end_time())\
+              + ': ' + temp_task_list[i].get_description())
     print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
     del temp_task_list

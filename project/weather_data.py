@@ -10,13 +10,14 @@ def get_weather(city):
 
     # get the info from the API
     response = requests.get(complete_url)
-    x = response.json()
+    response_json = response.json()
     # check if the city exists
-    if x["cod"] != "404":
-        print(x)
-        return x
+    if response_json["cod"] != "404":
+        print(response_json)
+        return response_json
     else:
         print("City not found")
+        return 0
 
 
 get_weather("Delft")
