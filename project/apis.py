@@ -5,7 +5,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-from classes import Task, TaskList
+from classes import Task
 import requests
 
 # For the testing purposes of this project there is a testing gmail workspace
@@ -70,11 +70,10 @@ def get_weather(city):
 
     # get the info from the API
     response = requests.get(complete_url)
-    x = response.json()
+    data = response.json()
     # check if the city exists
-    if x["cod"] != "404":
-        print(x)
-        return x
+    if data["cod"] != "404":
+        return data
     else:
         print("City not found")
 
