@@ -61,6 +61,7 @@ def get_google_calendar(task_list):
 
     return task_list
 
+
 def get_weather(city):
     # set the api key and the url of the weather website
     api_key = "094eaa9002d7545fbda3e4c9f5956fe9"
@@ -77,4 +78,3 @@ def get_weather(city):
     else:
         print("City not found")
         return None
-
