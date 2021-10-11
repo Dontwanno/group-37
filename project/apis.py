@@ -12,11 +12,19 @@ from classes import Task, TaskList
 # Password: h1IUB$3WQK
 # This mail has allready been configured. DONT CHANGE OR DELETE  THE credentials.json and token.json files
 
-# If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+
 
 
 def get_google_calendar(task_list):
+    '''
+    This function gets the data from a specific google calander. In this case the program is looking at the calander of
+    the gmail workvalvesem@gmail.com. If it gives errors with the credentials, delete the token.json, rerun the program
+    and log into the website using the password h1IUB$3WQK.
+    :param task_list: a list of the current tasks
+    :return: the list with the current tasks and the tasks added from the google calendar.
+    '''
+    # If modifying these scopes, delete the file token.json.
+    SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first

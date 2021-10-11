@@ -40,6 +40,11 @@ def new_task(task_list, start_end):
 
 
 def set_start_end_time(start_end):
+    '''
+    This definition lets the user input a start and end time for their day.
+    :param start_end: The current start and end time of the day
+    :return: The start and end time entered by the user
+    '''
     print("Please enter the start and end time of your workday.\n")
     start_time = input("Start time: ")
     end_time = input("End time: ")
@@ -60,12 +65,22 @@ def set_start_end_time(start_end):
 
 
 def format_int_to_time_string(time_int):
+    '''
+    This definition formats an entered time into a timestring
+    :param time_int: The time as an integer
+    :return: a time string
+    '''
     hour = str(time_int)[0: len(str(time_int)) - 2]
     min = str(time_int)[len(str(time_int)) - 2: len(str(time_int))]
     return hour + ':' + min
 
 
 def display_schedule(task_list):
+    '''
+    This definition displays the schedule
+    :param task_list: A list of the current tasks
+    :return: Prints the current schedule
+    '''
     temp_task_list = task_list.get_task_list()
     print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
     print('SCHEDULE:')
