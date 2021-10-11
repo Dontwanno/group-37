@@ -11,9 +11,8 @@
 #                 of main_menu and view_tasks classes at BACKEND section.
 # python_version  :3.8.0
 # =======================================================================
-
 import sys, colorama
-from ui import new_task, remove_task, display_schedule, set_start_end_time
+from ui import new_task, display_schedule, set_start_end_time
 from classes import Task, TaskList
 from apis import get_google_calendar
 
