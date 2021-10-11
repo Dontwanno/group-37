@@ -5,14 +5,6 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-from classes import Task, TaskList
-
-# For the testing purposes of this project there is a testing gmail workspace
-# Mail: workvalvesem@gmail.com
-# Password: h1IUB$3WQK
-# This mail has allready been configured. DONT CHANGE OR DELETE  THE credentials.json and token.json files
-
-
 
 
 def get_google_calendar(task_list):
@@ -62,8 +54,7 @@ def get_google_calendar(task_list):
         start_time = int(start[11:13] + start[14:16])
         end_time = int(end[11:13] + end[14:16])
         description = event['summary']
-        task_list.add_task(Task(start_time, end_time, description, True))
-
         print("Added " + event['summary'] + " to your WorkValve calendar")
+        return start_time, end_time, description
 
     return task_list
