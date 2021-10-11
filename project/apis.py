@@ -76,4 +76,5 @@ def get_weather(city):
         return data
     else:
         print("City not found")
+        return None
 
