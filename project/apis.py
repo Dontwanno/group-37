@@ -16,19 +16,19 @@ def get_google_calendar(task_list):
     :return: the list with the current tasks and the tasks added from the google calendar.
     '''
     # If modifying these scopes, delete the file token.json.
-    SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+    scopes = ['https://www.googleapis.com/auth/calendar.readonly']
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
     if os.path.exists('APIs/token.json'):
-        creds = Credentials.from_authorized_user_file('APIs/token.json', SCOPES)
+        creds = Credentials.from_authorized_user_file('APIs/token.json', scopes)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file('APIs/credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file('APIs/credentials.json', scopes)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('APIs/token.json', 'w') as token:
