@@ -11,8 +11,9 @@
 #                 of main_menu and view_tasks classes at BACKEND section.
 # python_version  :3.8.0
 # =======================================================================
+
 import sys, colorama
-from ui import new_task, display_schedule, set_start_end_time
+from ui import new_task, remove_task, display_schedule, set_start_end_time
 from classes import Task, TaskList
 from apis import get_google_calendar
 
@@ -20,11 +21,6 @@ task_list = TaskList()
 # Get current tasks from Google
 # task_list = get_google_calendar(task_list)
 start_end = [1000, 2000]
-
-task_list.add_task(Task(845, 1030, "Walk my dog", False))
-task_list.add_task(Task(1030, 1345, "Meeting with SEM boys", False))
-task_list.add_task(Task(1345, 1530, "Do my homework", False))
-task_list.add_task(Task(1545, 1800, "Crying session", False))
 
 
 colorama.init()  # Color init for Windows
@@ -37,39 +33,39 @@ colors = {
     "info": "35m",  # Orange for info messages
     "error": "31m",  # Red for error messages
     "ok": "32m",  # Green for success messages
-    "view_tasksc": "\033[46m",  # Light blue menu
-    "main_menuc": "\033[44m",  # Blue menu
+    "other_menus": "\033[46m",  # Light blue menu
+    "main_menu": "\033[44m",  # Blue menu
     "close": "\033[0m"  # Color coding close
 }
-cc = "\033[0m"
-ct = "\033[101m"
-cs = "\033[41m"
-c1 = colors["main_menuc"]
-c2 = colors["view_tasksc"]
+CC = "\033[0m"
+CT = "\033[101m"
+CS = "\033[41m"
+C1 = colors["main_menu"]
+C2 = colors["other_menus"]
 
 # =======================
 #    USER CONFIG
 # =======================
-programtitle = "WorkValve"
+PROGRAM_TITLE = "WorkValve"
 
 # Fill the options as needed.
 main_menu_colors = {
-    "ct": ct,
-    "cs": cs,
-    "opt": c1
+    "ct": CT,
+    "cs": CS,
+    "opt": C1
 }
 main_menu_options = {
     "title": "Main menu",
-    "1": "Add tasks",
+    "1": "Add/Remove tasks",
     "2": "View tasks",
     "3": "Settings",
     "0": "Quit (or use CNTRL+C)",
 }
 
 view_tasks_colors = {
-    "ct": ct,
-    "cs": cs,
-    "opt": c2
+    "ct": CT,
+    "cs": CS,
+    "opt": C2
 }
 view_tasks_options = {
     "title": "View tasks",
@@ -79,9 +75,9 @@ view_tasks_options = {
 }
 
 add_tasks_colors = {
-    "ct": ct,
-    "cs": cs,
-    "opt": c2
+    "ct": CT,
+    "cs": CS,
+    "opt": C2
 }
 add_tasks_options = {
     "title": "Add/Remove tasks",
@@ -92,9 +88,9 @@ add_tasks_options = {
 }
 
 settings_colors = {
-    "ct": ct,
-    "cs": cs,
-    "opt": c1
+    "ct": CT,
+    "cs": CS,
+    "opt": C2
 }
 settings_options = {
     "title": "Settings",
@@ -108,27 +104,27 @@ settings_options = {
 # =======================
 #      HELPERS
 # =======================
-def printWithColor(color, string):
-    print("\033[" + colors[color] + " " + string + cc)
+def print_with_color(color, string):
+    print("\033[" + colors[color] + " " + string + CC)
 
 
-def printError():
-    printWithColor("error", "Error!!")
+def print_error(error_message):
+    print_with_color("error", error_message)
     return 1
 
 
-def printSuccess():
-    printWithColor("ok", "Success!!")
+def print_success():
+    print_with_color("ok", "Success!!")
     return 0
 
 
 # Exit program
-def exit():
+def menu_exit():
     sys.exit()
 
 
 # Handles the CNTRL+C to leave properly the script
-def sigint_handler(signum, frame):
+def sigint_handler():
     print("CNTRL+C exit")
     sys.exit(0)
 
@@ -138,67 +134,60 @@ def sigint_handler(signum, frame):
 # =======================
 
 # Menu template
-class menu_template():
+class MenuTemplate:
 
-    def __init__(self, options, colors):
+    def __init__(self, options, colours):
         self.menu_width = 50  # Width in characters of the printed menu
         self.options = options
-        self.colors = colors
+        self.colors = colours
+        self.method_dict = {"1": self.method_1,
+                            "2": self.method_2,
+                            "3": self.method_3,
+                            "4": self.method_4,
+                            "5": self.method_5,
+                            "a": self.method_a,
+                            "s": self.method_s,
+                            "d": self.method_d,
+                            "e": self.method_e,
+                            "f": self.method_f,
+                            "0": self.method_0
+                            }
 
     # =======================
     #      Menu prints
     # =======================
-    def createMenuLine(self, letter, color, length, text):
+
+    def create_menu_line(self, letter, color, length, text):
         menu = color + " [" + letter + "] " + text
         line = " " * (length - len(menu))
-        return menu + line + cc
+        return menu + line + CC
 
-    def createMenu(self, size):
-        line = self.colors["ct"] + " " + programtitle
-        line += " " * (size - len(programtitle) - 6)
-        line += cc
+    def create_menu(self, size):
+        line = self.colors["ct"] + " " + PROGRAM_TITLE
+        line += " " * (size - len(PROGRAM_TITLE) - 6)
+        line += CC
         print(line)  # Title
         line = self.colors["cs"] + " " + self.options["title"]
         line += " " * (size - len(self.options["title"]) - 6)
-        line += cc
+        line += CC
         print(line)  # Subtitle
         for key in self.options:
-            if (key != "title"):
-                print(self.createMenuLine(key, self.colors["opt"], size, self.options[key]))
+            if key != "title":
+                print(self.create_menu_line(key, self.colors["opt"], size, self.options[key]))
 
-    def printMenu(self):
-        self.createMenu(self.menu_width)
+    def print_menu(self):
+        self.create_menu(self.menu_width)
 
     # =======================
     #      Action calls
     # =======================
-    def action(self, ch):
-        if ch == '1':
-            self.method_1()
-        elif ch == '2':
-            self.method_2()
-        elif ch == '3':
-            self.method_3()
-        elif ch == '4':
-            self.method_4()
-        elif ch == '5':
-            self.method_5()
-        elif ch == 'a':
-            self.method_a()
-        elif ch == 's':
-            self.method_s()
-        elif ch == 'd':
-            self.method_d()
-        elif ch == 'e':
-            self.method_e()
-        elif ch == 'f':
-            self.method_f()
-        elif (ch == ''):
-            pass  # Print menu again
-        elif ch == '0':
-            sys.exit()
+    def action(self, choice):
+        if choice in self.method_dict:
+            self.method_dict[choice]()
+        elif choice == "":
+            pass
         else:
-            printError()
+            print_error("Please enter valid menu option")
 
     # =======================
     #      Empty methods
@@ -233,33 +222,48 @@ class menu_template():
     def method_f(self):
         pass
 
+    def method_0(self):
+        sys.exit()
+
 
 # =======================
-#      BACKEND
+#      BACKEND (instantiation of all the different menus)
 # =======================
 
 # Create here custom actions.
 
-class main_menu(menu_template):
-    pass
-
-
-class add_tasks(menu_template):
+class MainMenu(MenuTemplate):
     def method_1(self):
-        new_task(task_list, start_end)
-        return
+        MenuHandler.current_menu = "add_tasks"
 
     def method_2(self):
+        MenuHandler.current_menu = "view_tasks"
+
+    def method_3(self):
+        MenuHandler.current_menu = "settings"
+
+
+class AddTasks(MenuTemplate):
+    def method_1(self):
+        new_task(task_list, start_end)
+
+    def method_2(self):
+        remove_task(task_list)
         return
 
+    def method_3(self):
+        MenuHandler.current_menu = "main_menu"
 
-class view_tasks(menu_template):
+
+class ViewTasks(MenuTemplate):
     def method_1(self):
         display_schedule(task_list)
-        return
+
+    def method_2(self):
+        MenuHandler.current_menu = "main_menu"
 
 
-class settings(menu_template):
+class Settings(MenuTemplate):
     def method_1(self):
         set_start_end_time(start_end)
 
@@ -267,67 +271,29 @@ class settings(menu_template):
         start_time = str(start_end[0])
         end_time = str(start_end[1])
         print(f"Your start time is: {start_time[:2]}:{start_time[2:]} and your end time is:"
-          f" {str(end_time)[:2]}:{end_time[2:]}")
+              f" {str(end_time)[:2]}:{end_time[2:]}")
+
+    def method_3(self):
+        MenuHandler.current_menu = "main_menu"
 
 
 # =======================
 #      MAIN PROGRAM
 # =======================
 
-class menu_handler:
+# set initial menu
+
+class MenuHandler:
+    current_menu = "main_menu"
 
     def __init__(self):
-        self.current_menu = "main_menu"
-        self.m1 = main_menu(main_menu_options, main_menu_colors)
-        self.m2 = add_tasks(add_tasks_options, add_tasks_colors)
-        self.m3 = view_tasks(view_tasks_options, view_tasks_colors)
-        self.m4 = settings(settings_options, settings_colors)
 
-    def menuExecution(self):
-        if (self.current_menu == "main_menu"):
-            self.m1.printMenu()
-        elif (self.current_menu == "add_tasks"):
-            self.m2.printMenu()
-        elif (self.current_menu == "view_tasks"):
-            self.m3.printMenu()
-        elif (self.current_menu == "settings"):
-            self.m4.printMenu()
+        self.menu_dict = {"main_menu": MainMenu(main_menu_options, main_menu_colors),
+                          "add_tasks": AddTasks(add_tasks_options, add_tasks_colors),
+                          "view_tasks": ViewTasks(view_tasks_options, view_tasks_colors),
+                          "settings": Settings(settings_options, settings_colors)}
 
+    def menu_execution(self):
+        self.menu_dict[MenuHandler.current_menu].print_menu()
         choice = input("Please enter what you want to do: ")
-        if (self.current_menu == "main_menu"):
-            if (choice == "1"):
-                self.current_menu = "add_tasks"
-            elif (choice == "2"):
-                self.current_menu = "view_tasks"
-            elif (choice == "3"):
-                self.current_menu = "settings"
-            else:
-                self.actuator(0, choice)
-
-        elif (self.current_menu == "add_tasks"):
-            if (choice == "3"):
-                self.current_menu = "main_menu"
-            else:
-                self.actuator(1, choice)
-
-        elif (self.current_menu == "view_tasks"):
-            if (choice == "2"):
-                self.current_menu = "main_menu"
-            else:
-                self.actuator(2, choice)
-
-        elif self.current_menu == "settings":
-            if (choice == "3"):
-                self.current_menu = "main_menu"
-            else:
-                self.actuator(3, choice)
-
-    def actuator(self, type, ch):
-        if type == 0:
-            self.m1.action(ch)
-        elif type == 1:
-            self.m2.action(ch)
-        elif type == 2:
-            self.m3.action(ch)
-        elif type == 3:
-            self.m4.action(ch)
+        self.menu_dict[MenuHandler.current_menu].action(choice)
