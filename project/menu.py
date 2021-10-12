@@ -14,6 +14,7 @@
 
 import sys
 import colorama
+import pickle
 from ui import new_task, remove_task, display_schedule, set_start_end_time
 from classes import TaskList
 # from classes import Task
