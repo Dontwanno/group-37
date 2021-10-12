@@ -12,10 +12,13 @@
 # python_version  :3.8.0
 # =======================================================================
 
-import sys, colorama
+import sys
+import colorama
+import pickle
 from ui import new_task, remove_task, display_schedule, set_start_end_time
-from classes import Task, TaskList
-from apis import get_google_calendar
+from classes import TaskList
+# from classes import Task
+# from apis import get_google_calendar
 
 task_list = TaskList()
 # Get current tasks from Google
@@ -96,7 +99,9 @@ settings_options = {
     "title": "Settings",
     "1": "Change start and end time of day",
     "2": "Show current start and end time of day",
-    "3": "Main menu",
+    "3": "Read save file",
+    "4": "Save to save file",
+    "5": "Main menu",
     "0": "Quit (or use CNTRL+C)",
 }
 
@@ -137,8 +142,8 @@ def sigint_handler():
 class MenuTemplate:
     def __init__(self, options, colours):
         '''
-        This is the initializing function of the class that determines the template of the menu, setting the right
-        colors for the right options.
+        This is the initializing function of the class that determines the template of the menu,
+        setting the right colors for the right options.
         :param options: The different options the menu has.
         :param colours: The different colors the options should have.
         '''
@@ -177,7 +182,8 @@ class MenuTemplate:
 
     def create_menu(self, size):
         '''
-        This definition creates the menu. The option lines are set in the create_menu_line definition.
+        This definition creates the menu. The option lines are set in the
+        create_menu_line definition.
         :param size: the size of the menu
         :return: Prints the menu
         '''
@@ -257,8 +263,8 @@ class MenuTemplate:
 
 class MainMenu(MenuTemplate):
     '''
-    This is the main menu. Option 1 lets the user go to the add_tasks part of the menu. Option 2 lets them display their
-    schedule and option 3 lets them go to the settings menu.
+    This is the main menu. Option 1 lets the user go to the add_tasks part of the menu.
+    Option 2 lets them display their schedule and option 3 lets them go to the settings menu.
     '''
     def method_1(self):
         MenuHandler.current_menu = "add_tasks"
@@ -272,15 +278,15 @@ class MainMenu(MenuTemplate):
 
 class AddTasks(MenuTemplate):
     '''
-    This class is the menu part where the user can add a task. Option 1 is entering a new task. Option 2 is removing a
-    task and option 3 lets the user return to the main menu.
+    This class is the menu part where the user can add a task.
+    Option 1 is entering a new task. Option 2 is removing a task and option 3 lets
+    the user return to the main menu.
     '''
     def method_1(self):
         new_task(task_list, start_end)
 
     def method_2(self):
         remove_task(task_list)
-        return
 
     def method_3(self):
         MenuHandler.current_menu = "main_menu"
@@ -288,8 +294,8 @@ class AddTasks(MenuTemplate):
 
 class ViewTasks(MenuTemplate):
     '''
-    This class describes the viewtasks part of the menu. option 1 lets the user display their schedule, option 2 lets
-    them return to the main menu.
+    This class describes the viewtasks part of the menu.
+    option 1 lets the user display their schedule, option 2 lets them return to the main menu.
     '''
     def method_1(self):
         display_schedule(task_list)
@@ -300,8 +306,9 @@ class ViewTasks(MenuTemplate):
 
 class Settings(MenuTemplate):
     '''
-    This class describes the settings menu, with option 1 letting the user enter the start and end time of their day,
-    option 2 showing the current start and endtime of their day and option 3 letting them return to the main menu.
+    This class describes the settings menu, with option 1 letting
+    the user enter the start and end time of their day, option 2 showing
+    the current start and end time of their day and option 3 letting them return to the main menu.
     '''
     def method_1(self):
         set_start_end_time(start_end)
@@ -313,6 +320,14 @@ class Settings(MenuTemplate):
               f" {str(end_time)[:2]}:{end_time[2:]}")
 
     def method_3(self):
+        TaskList.read_save_file(task_list)
+        print("Savefile read!")
+
+    def method_4(self):
+        TaskList.save_to_file(task_list)
+        print("Savefile saved!")
+
+    def method_5(self):
         MenuHandler.current_menu = "main_menu"
 
 
@@ -327,8 +342,8 @@ class MenuHandler:
 
     def __init__(self):
         '''
-        initializing function of the menu handler. This handles in what menu the user currently resides in and lets the
-        user change in what menu it wants to go.
+        initializing function of the menu handler. This handles in what
+        menu the user currently resides in and lets the user change in what menu it wants to go.
         '''
         self.menu_dict = {"main_menu": MainMenu(main_menu_options, main_menu_colors),
                           "add_tasks": AddTasks(add_tasks_options, add_tasks_colors),
@@ -337,9 +352,10 @@ class MenuHandler:
 
     def menu_execution(self):
         '''
-        This function shows the current menu and asks what the user wants to do. The user can in this way change what
-        menu he will be in.
+        This function shows the current menu and asks what the user wants to do.
+        The user can in this way change what menu he will be in.
         '''
+
         self.menu_dict[MenuHandler.current_menu].print_menu()
         choice = input("Please enter what you want to do: ")
         self.menu_dict[MenuHandler.current_menu].action(choice)
