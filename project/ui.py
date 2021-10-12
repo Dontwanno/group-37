@@ -1,4 +1,6 @@
 from classes import Task
+
+
 # from classes import TaskList
 
 
@@ -19,17 +21,20 @@ def new_task(task_list, start_end):
             answer = input("Enter yes or no: ")
             if answer == "yes":
                 description = input("Description: ")
+                priority = int(input("Priority:"))
                 start_time = int(input("Start time: "))
                 end_time = int(input("End time: "))
                 if start_time > 2400 or end_time > 2400:
                     raise ValueError
                 # Add task to the task list
-                task_list.add_task(Task(start_time, end_time, description, False))
+                task_list.add_task(Task(start_time, end_time, None, priority, description, False))
             elif answer == "no":
                 description = input("Description: ")
+                priority = int(input("Priority:"))
                 task_length = int(input("Task length: "))
                 # Fit new task
-                task_list.fit_task(Task(task_length, 0, description, False), start_end)
+                task_list.fit_task(Task(0, 0, task_length, priority, description, False), start_end)
+
     except ValueError:
         # if input was not finished, give message and return old task list
         print("Time must be valid and in integer format e.g. 8:45 = 845, 20:15 = 2015.")
@@ -68,13 +73,11 @@ def format_int_to_time_string(time_int):
 
 
 def display_schedule(task_list):
-    temp_task_list = task_list.get_task_list()
+    temp_task_list = task_list.task_list
     print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
     print('SCHEDULE:')
-    for i in range(len(temp_task_list)):
-        print('- ' + format_int_to_time_string(temp_task_list[i].get_start_time()) + ' --> ' +
-              format_int_to_time_string(temp_task_list[i].get_end_time())\
-              + ': ' + temp_task_list[i].get_description())
+    for task in temp_task_list:
+        print(f"- {task.start_time} --> {task.end_time}: {task.description}")
     print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
     del temp_task_list
 
