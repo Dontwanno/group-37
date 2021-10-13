@@ -1,4 +1,4 @@
-from classes import Task, TaskList
+from project.classes import Task, TaskList
 
 
 def new_task(task_list, start_end):
@@ -60,7 +60,11 @@ def set_start_end_time(start_end):
 
 
 def format_int_to_time_string(time_int):
-    hour = str(time_int)[0: len(str(time_int)) - 2]
+    if time_int < 100:
+        time_int += 100
+        hour = "0"
+    else:
+        hour = str(time_int)[0: len(str(time_int)) - 2]
     min = str(time_int)[len(str(time_int)) - 2: len(str(time_int))]
     return hour + ':' + min
 
