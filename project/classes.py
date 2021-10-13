@@ -46,7 +46,7 @@ class TaskList:
             if isinstance(new_task, Task):
                 # Make sure that task_list is not empty
                 # If new task is before the latest task, insert it on the correct spot
-                if self.task_list and new_task.get_start_time() < self.task_list[len(self.task_list) - 1].get_start_time():
+                if self.task_list and new_task.get_start_time() < self.task_list[-1].get_start_time():
                     i = 0
                     while new_task.get_start_time() > self.task_list[i].get_start_time():
                         i += 1
@@ -62,7 +62,7 @@ class TaskList:
         """
         Adds a task to the TaskList object's task_list, in the correct time
         :param new_task: The new task of class Task
-        :param start_end: List of start [0] and end [1] times
+        :param start_end: List of start [0] and end [1] times for the day
         """
         try:
             if isinstance(new_task, Task):
