@@ -15,13 +15,16 @@ import sys
 import colorama
 from ui import new_task, display_schedule, set_start_end_time, remove_task
 from classes import Task, TaskList
+from datetime import date, timedelta
 from apis import get_google_calendar
 
 task_list = TaskList()
-task_list.add_task(Task(845, 1030, None, 1, "Walk my dog", False))
-task_list.add_task(Task(1030, 1345, None, 1, "Meeting with SEM boys", False))
-task_list.add_task(Task(1345, 1530, None, 1, "Do my homework", False))
-task_list.add_task(Task(1545, 1800, None, 1, "Crying session", False))
+task_list.add_task(Task(timedelta(hours=8, minutes=45), timedelta(hours=10, minutes=30), None, 1, "Walk my dog", False), date.today())
+task_list.add_task(Task(timedelta(hours=10, minutes=30), timedelta(hours=13, minutes=45), None, 1, "Meeting with SEM boys", False), date.today())
+task_list.add_task(Task(timedelta(hours=13, minutes=45), timedelta(hours=15, minutes=30), None, 1, "Do my homework", False), date.today())
+task_list.add_task(Task(timedelta(hours=15, minutes=45), timedelta(hours=18, minutes=00), None, 1, "Crying session", False), date.today())
+task_list.add_task(Task(timedelta(hours=15, minutes=45), timedelta(hours=18, minutes=00), None, 1, "Crying session", False), date.today() + timedelta(days=1))
+
 
 # Get current tasks from Google
 # task_list = get_google_calendar(task_list)
@@ -254,6 +257,7 @@ class AddTasks(MenuTemplate):
 
     def method_2(self):
         remove_task(task_list)
+
     def method_3(self):
         MenuHandler.current_menu = "main_menu"
 
