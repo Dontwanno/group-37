@@ -1,4 +1,4 @@
-pytest
+pytest~=6.2.5
 pylint
 coverage
 pytest-cov
@@ -14,3 +14,4 @@ google-auth==2.0.0
 google-api-python-client==2.22.0
 google-auth-oauthlib==0.4.1
 colorama~=0.4.4
+requests~=2.26.0
