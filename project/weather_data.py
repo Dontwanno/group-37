@@ -16,7 +16,5 @@ def get_weather(city):
         print(x)
         return x
     else:
-        print("City not found")
-
-
-get_weather("Delft")
+        print("City for weather data not found")
+        return 0
