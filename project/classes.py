@@ -74,11 +74,10 @@ class TaskList:
                         i = 0
                         while new_task.start_time > task_list[i].start_time:
                             i += 1
-                        if not self.overlap(new_task, task_list[i]):
+                        if not self.overlap(new_task, task_list[i]) and not self.overlap(new_task, task_list[i-1]):
                             self.task_list_dict[task_date].insert(i, new_task)
                         else:
-                            print(f"The time of the task you entered overlapped,"
-                                  f" with {task_list[i].description}\nTask was not added.")
+                            print(f"The time of the task you entered overlapped with another task\nTask was not added.")
                         return
                     else:
                         if self.overlap(new_task, task_list[-1]):
