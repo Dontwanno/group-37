@@ -5,7 +5,8 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-from classes import Task, TaskList
+from classes import Task
+import requests
 
 # For the testing purposes of this project there is a testing gmail workspace
 # Mail: workvalvesem@gmail.com
@@ -59,3 +60,21 @@ def get_google_calendar(task_list):
         print("Added " + event['summary'] + " to your WorkValve calendar")
 
     return task_list
+
+
+def get_weather(city):
+    # set the api key and the url of the weather website
+    api_key = "094eaa9002d7545fbda3e4c9f5956fe9"
+    base_url = "https://api.openweathermap.org/data/2.5/forecast?"
+    # complete url
+    complete_url = base_url + "appid=" + api_key + "&q=" + city
+
+    # get the info from the API
+    response = requests.get(complete_url)
+    data = response.json()
+    # check if the city exists
+    if data["cod"] != "404":
+        return data
+    else:
+        print("City not found")
+        return None
