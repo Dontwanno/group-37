@@ -11,9 +11,8 @@
 #                 of main_menu and view_tasks classes at BACKEND section.
 # python_version  :3.8.0
 # =======================================================================
-
 import sys, colorama
-from ui import new_task, remove_task, display_schedule, set_start_end_time
+from ui import new_task, display_schedule, set_start_end_time
 from classes import Task, TaskList
 from apis import get_google_calendar
 
@@ -21,6 +20,11 @@ task_list = TaskList()
 # Get current tasks from Google
 # task_list = get_google_calendar(task_list)
 start_end = [1000, 2000]
+
+task_list.add_task(Task(845, 1030, "Walk my dog", False))
+task_list.add_task(Task(1030, 1345, "Meeting with SEM boys", False))
+task_list.add_task(Task(1345, 1530, "Do my homework", False))
+task_list.add_task(Task(1545, 1800, "Crying session", False))
 
 
 colorama.init()  # Color init for Windows

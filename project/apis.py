@@ -16,19 +16,19 @@ def get_google_calendar(task_list):
     :return: the list with the current tasks and the tasks added from the google calendar.
     '''
     # If modifying these scopes, delete the file token.json.
-    scopes = ['https://www.googleapis.com/auth/calendar.readonly']
+    SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
     if os.path.exists('APIs/token.json'):
-        creds = Credentials.from_authorized_user_file('APIs/token.json', scopes)
+        creds = Credentials.from_authorized_user_file('APIs/token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file('APIs/credentials.json', scopes)
+            flow = InstalledAppFlow.from_client_secrets_file('APIs/credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('APIs/token.json', 'w') as token:
@@ -54,8 +54,9 @@ def get_google_calendar(task_list):
         start_time = int(start[11:13] + start[14:16])
         end_time = int(end[11:13] + end[14:16])
         description = event['summary']
+        task_list.add_task(Task(start_time, end_time, description, True))
+
         print("Added " + event['summary'] + " to your WorkValve calendar")
-        return start_time, end_time, description
 
     return task_list
 
