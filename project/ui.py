@@ -2,8 +2,6 @@ from classes import Task
 from datetime import date, timedelta
 
 
-
-
 def new_task(task_list, start_end):
     """
     Allows user to add a new task

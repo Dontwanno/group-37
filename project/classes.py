@@ -1,4 +1,5 @@
 from datetime import timedelta
+import pickle
 
 
 class Task:
@@ -73,9 +74,7 @@ class TaskList:
                         i = 0
                         while new_task.start_time > task_list[i].start_time:
                             i += 1
-                        print(1)
                         if not self.overlap(new_task, task_list[i]):
-                            print(2)
                             self.task_list_dict[task_date].insert(i, new_task)
                         else:
                             print(f"The time of the task you entered overlapped,"
@@ -133,7 +132,6 @@ class TaskList:
                     valid_slots = [
                         slot for slot in time_slots if new_task.duration <= slot[0]
                     ]
-                    print(valid_slots)
                     if valid_slots:
                         smallest_slot = min(valid_slots)
                         self.add_task(
@@ -166,17 +164,34 @@ class TaskList:
             print("Task is not off class Task.")
 
     def remove_task(self, removed_task):
+        """
+        This function lets the user remove a task
+        :param removed_task: the description of the task the user wants to remove
+        :return: edits the task list by deleting the right task
+        """
         for task_date in self.task_list_dict:
             for task in self.task_list_dict[task_date]:
                 if task.description == removed_task:
                     self.task_list_dict[task_date].remove(task)
                     print("Task successfully deleted\n")
                     return
-        else:
-            print("There are no tasks with this description\n")
+
+        print("There are no tasks with this description\n")
 
     def get_task_list(self):
         return self.task_list_dict
+
+    def read_save_file(self):
+        with open('savefile.dat', 'rb') as file:
+            self.task_list_dict = pickle.load(file)
+        print(self.task_list_dict)
+
+    def save_to_file(self):
+        # save to a save file before system exit
+        save_list = self.get_task_list()
+        with open('savefile.dat', 'wb') as file:
+            pickle.dump(save_list, file, protocol=2)
+        print(self.task_list_dict)
 
     @staticmethod
     def overlap(task1, task2):

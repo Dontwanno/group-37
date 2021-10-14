@@ -1,4 +1,4 @@
-from project.weather_data import get_weather
+from project.apis import get_weather
 
 
 def test_get_weather():

@@ -30,12 +30,6 @@ task_list.add_task(Task(timedelta(hours=15, minutes=45), timedelta(hours=18, min
 # task_list = get_google_calendar(task_list)
 start_end = [800, 2000]
 
-task_list.add_task(Task(845, 1030, "Walk my dog", False))
-task_list.add_task(Task(1030, 1345, "Meeting with SEM boys", False))
-task_list.add_task(Task(1345, 1530, "Do my homework", False))
-task_list.add_task(Task(1545, 1800, "Crying session", False))
-
-
 colorama.init()  # Color init for Windows
 
 # =======================

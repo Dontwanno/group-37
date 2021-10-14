@@ -5,7 +5,8 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-
+import requests
+from classes import Task
 
 def get_google_calendar(task_list):
     '''
@@ -32,7 +33,7 @@ def get_google_calendar(task_list):
             flow = InstalledAppFlow.from_client_secrets_file('APIs/credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open('api_folder/token.json', 'w', encoding='utf-8') as token:
+        with open('APIs/token.json', 'w', encoding='utf-8') as token:
             token.write(creds.to_json())
 
     service = build('calendar', 'v3', credentials=creds)
