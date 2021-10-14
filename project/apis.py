@@ -5,31 +5,30 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-from classes import Task
-import requests
-
-# For the testing purposes of this project there is a testing gmail workspace
-# Mail: workvalvesem@gmail.com
-# Password: h1IUB$3WQK
-# This mail has allready been configured. DONT CHANGE OR DELETE  THE credentials.json and token.json files
-
-# If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
 
 def get_google_calendar(task_list):
+    '''
+    This function gets the data from a specific google calander. In this case the program is looking at the calander of
+    the gmail workvalvesem@gmail.com. If it gives errors with the credentials, delete the token.json, rerun the program
+    and log into the website using the password h1IUB$3WQK.
+    :param task_list: a list of the current tasks
+    :return: the list with the current tasks and the tasks added from the google calendar.
+    '''
+    # If modifying these scopes, delete the file token.json.
+    scopes = ['https://www.googleapis.com/auth/calendar.readonly']
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
     if os.path.exists('APIs/token.json'):
-        creds = Credentials.from_authorized_user_file('APIs/token.json', SCOPES)
+        creds = Credentials.from_authorized_user_file('APIs/token.json', scopes)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file('APIs/credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file('APIs/credentials.json', scopes)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('APIs/token.json', 'w') as token:
@@ -55,9 +54,8 @@ def get_google_calendar(task_list):
         start_time = int(start[11:13] + start[14:16])
         end_time = int(end[11:13] + end[14:16])
         description = event['summary']
-        task_list.add_task(Task(start_time, end_time, description, True))
-
         print("Added " + event['summary'] + " to your WorkValve calendar")
+        return start_time, end_time, description
 
     return task_list
 

@@ -179,6 +179,11 @@ class TaskList:
             print("Task is not of class Task.")
 
     def remove_task(self, removed_task):
+        '''
+        This function lets the user remove a task
+        :param removed_task: the description of the task the user wants to remove
+        :return: edits the tasklist by deleting the right task
+        '''
         for task in self.task_list:
             if task.description == removed_task:
                 self.task_list.remove(task)
