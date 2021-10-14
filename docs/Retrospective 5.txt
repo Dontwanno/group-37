@@ -1,0 +1,17 @@
+Went well:
+No major issues with the merges and branches from previous sprints
+Most of the Pylint issues have been taken care of, still a few remaining that need fixing A.S.A.P.
+Integration with multiple days works now, also, overlapping is fixed now
+
+Needs improvement:
+We now have issues with Git because people were working simultaneously on the same files.
+Better communication. At the last sprint we made agreements when people would work on certain issues so as not to get in each other's way. When this didn’t happen and this was not communicated, it caused a delay in our sprint.
+Write description + dod for every issue created on gitlab
+
+Next step:
+Integrating google API
+Integrating weather API
+Add on requirements in the report
+Merge locally
+Mocking for testing and bonus points
+Fix last remaining Pylint issues
