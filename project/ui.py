@@ -1,4 +1,5 @@
-from classes import Task, TaskList
+from classes import Task
+# from classes import TaskList
 
 
 def new_task(task_list, start_end):
@@ -20,15 +21,17 @@ def new_task(task_list, start_end):
                 description = input("Description: ")
                 start_time = int(input("Start time: "))
                 end_time = int(input("End time: "))
+                priority = int(input("Priority: "))
                 if start_time > 2400 or end_time > 2400:
                     raise ValueError
                 # Add task to the task list
-                task_list.add_task(Task(start_time, end_time, description, False))
+                task_list.add_task(Task(start_time, end_time, priority, description, False))
             elif answer == "no":
                 description = input("Description: ")
                 task_length = int(input("Task length: "))
+                priority = int(input("Priority: "))
                 # Fit new task
-                task_list.fit_task(Task(task_length, 0, description, False), start_end)
+                task_list.fit_task(Task(task_length, 0, priority, description, False), start_end)
     except ValueError:
         # if input was not finished, give message and return old task list
         print("Time must be valid and in integer format e.g. 8:45 = 845, 20:15 = 2015.")
@@ -48,7 +51,8 @@ def set_start_end_time(start_end):
     print("Please enter the start and end time of your workday.\n")
     start_time = input("Start time: ")
     end_time = input("End time: ")
-    print(f"\nThe start time you entered is: {start_time[:2]}:{start_time[2:]}\nThe end time you entered is:"
+    print(f"\nThe start time you entered is:\
+            {start_time[:2]}:{start_time[2:]}\nThe end time you entered is:"
           f" {end_time[:2]}:{end_time[2:]}\nAre these times correct?")
     start_end[0] = int(start_time)
     start_end[1] = int(end_time)
@@ -71,8 +75,8 @@ def format_int_to_time_string(time_int):
     :return: a time string
     '''
     hour = str(time_int)[0: len(str(time_int)) - 2]
-    min = str(time_int)[len(str(time_int)) - 2: len(str(time_int))]
-    return hour + ':' + min
+    minutes = str(time_int)[len(str(time_int)) - 2: len(str(time_int))]
+    return hour + ':' + minutes
 
 
 def display_schedule(task_list):
@@ -86,7 +90,8 @@ def display_schedule(task_list):
     print('SCHEDULE:')
     for i in range(len(temp_task_list)):
         print('- ' + format_int_to_time_string(temp_task_list[i].get_start_time()) + ' --> ' +
-              format_int_to_time_string(temp_task_list[i].get_end_time()) + ': ' + temp_task_list[i].get_description())
+              format_int_to_time_string(temp_task_list[i].get_end_time())\
+              + ': ' + temp_task_list[i].get_description())
     print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
     del temp_task_list
 

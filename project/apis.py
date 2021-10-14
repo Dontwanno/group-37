@@ -9,9 +9,10 @@ from google.oauth2.credentials import Credentials
 
 def get_google_calendar(task_list):
     '''
-    This function gets the data from a specific google calander. In this case the program is looking at the calander of
-    the gmail workvalvesem@gmail.com. If it gives errors with the credentials, delete the token.json, rerun the program
-    and log into the website using the password h1IUB$3WQK.
+    This function gets the data from a specific google calander. In this case the program is
+    looking at the calender of the gmail workvalvesem@gmail.com. If it gives errors with the
+    credentials, delete the token.json, rerun the program and log into the website using the
+    password h1IUB$3WQK.
     :param task_list: a list of the current tasks
     :return: the list with the current tasks and the tasks added from the google calendar.
     '''
@@ -31,7 +32,7 @@ def get_google_calendar(task_list):
             flow = InstalledAppFlow.from_client_secrets_file('APIs/credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open('APIs/token.json', 'w') as token:
+        with open('api_folder/token.json', 'w', encoding='utf-8') as token:
             token.write(creds.to_json())
 
     service = build('calendar', 'v3', credentials=creds)
