@@ -27,7 +27,9 @@ task_list.add_task(Task(timedelta(hours=15, minutes=45), timedelta(hours=18, min
 
 
 # Get current tasks from Google
-# task_list = get_google_calendar(task_list)
+start_time, end_time, description = get_google_calendar()
+for i in range(len(start_time)):
+    task_list.add_task(Task(start_time, end_time, description, True))
 start_end = [800, 2000]
 
 colorama.init()  # Color init for Windows
