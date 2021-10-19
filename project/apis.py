@@ -50,7 +50,7 @@ def get_google_calendar():
     end_time = []
     description = []
     if not events:
-        print('No meetings in google calender for today')
+        print('No events in google calender for today')
     for event in events:
         # Put starttime, endtime and name in list
         start = event['start'].get('dateTime', event['start'].get('date'))
