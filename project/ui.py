@@ -1,5 +1,5 @@
-from classes import Task
 from datetime import date, timedelta
+from classes import Task
 
 
 def new_task(task_list, start_end):
@@ -83,10 +83,10 @@ def format_int_to_time_string(time_int):
 
 
 def display_schedule(task_list):
-    for date in task_list.task_list_dict:
+    for date_time in task_list.task_list_dict:
         print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-        print(f'SCHEDULE: {date}')
-        for task in task_list.task_list_dict[date]:
+        print(f'SCHEDULE: {date_time}')
+        for task in task_list.task_list_dict[date_time]:
             print(f"- {task.start_time} --> {task.end_time}: {task.description}")
         print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
 
