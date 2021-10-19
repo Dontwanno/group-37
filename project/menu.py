@@ -12,10 +12,10 @@
 # python_version  :3.8.0
 # =======================================================================
 import sys
+from datetime import date, timedelta
 import colorama
 from ui import new_task, display_schedule, set_start_end_time, remove_task
 from classes import Task, TaskList
-from datetime import date, timedelta
 from apis import get_google_calendar
 
 task_list = TaskList()
@@ -27,7 +27,9 @@ task_list.add_task(Task(timedelta(hours=15, minutes=45), timedelta(hours=18, min
 
 
 # Get current tasks from Google
-# task_list = get_google_calendar(task_list)
+start, end, description = get_google_calendar()
+for i in range(len(start)):
+    task_list.add_task(Task(start, end, description, True))
 start_end = [800, 2000]
 
 colorama.init()  # Color init for Windows
