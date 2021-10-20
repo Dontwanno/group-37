@@ -204,7 +204,7 @@ class WeatherRating:
         '''
         Really easy sorting system for the weather during one day. If it rains then it gets a negative value because
         this is just bad weather to go outside. Otherwise it gets rated with a parabolic function with the centre at
-        the ideal temperature to go outside (now chosen at 294 degrees farenheit). This could of course be more elegant,
+        the ideal temperature to go outside (now chosen at 294 degrees kelvin). This could of course be more elegant,
         but that lies beyond the scope of this project. You can access the day_rating for the Unix timestamps sorted,
         alongside their rating.
         :param data: the data you get from the api
