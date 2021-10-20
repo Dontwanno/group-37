@@ -1,6 +1,7 @@
 import pytest
 from datetime import timedelta, date
-from project.classes import Task, TaskList
+from project.apis import get_weather
+from project.classes import Task, TaskList, WeatherRating
 
 
 def test_task():
@@ -44,15 +45,18 @@ def test_task_list_add_task_exception():
 def test_task_list_fit_task():
     test_list = TaskList()
     start_end = [1000, 2000]
-    test_list.fit_task(Task(timedelta(0), timedelta(0), timedelta(minutes=40), 1, "test", False), start_end, date.today())
+    test_list.fit_task(Task(timedelta(0), timedelta(0), timedelta(minutes=40), 1, "test", False), start_end,
+                       date.today())
     assert test_list.task_list_dict[date.today()][0].start_time == timedelta(hours=10)
     assert test_list.task_list_dict[date.today()][0].end_time == timedelta(hours=10, minutes=40)
     test_list.add_task(Task(timedelta(hours=8), timedelta(hours=9), None, None, "test2", False), date.today())
-    test_list.fit_task(Task(timedelta(0), timedelta(0), timedelta(minutes=40), 1, "fit_task2", False), start_end, date.today())
+    test_list.fit_task(Task(timedelta(0), timedelta(0), timedelta(minutes=40), 1, "fit_task2", False), start_end,
+                       date.today())
     assert test_list.task_list_dict[date.today()][-2].start_time == timedelta(hours=8)
     assert test_list.task_list_dict[date.today()][-2].end == timedelta(hours=9)
     test_list.add_task(Task(timedelta(hours=18), timedelta(hours=19), None, None, "test2", False), date.today())
-    test_list.fit_task(Task(timedelta(0), timedelta(0), timedelta(minutes=40), 1, "fit_task3", False), start_end, date.today())
+    test_list.fit_task(Task(timedelta(0), timedelta(0), timedelta(minutes=40), 1, "fit_task3", False), start_end,
+                       date.today())
     assert len(test_list.task_list_dict[date.today()]) == 4
 
 
@@ -75,3 +79,8 @@ def test_remove_task():
     assert len(test_list.task_list_dict[date.today()]) == 4
     test_list.remove_task("test2")
     assert test_list.task_list_dict[date.today()] == [test_1, test_3, test_4]
+
+
+def test_weather_rating():
+    data = get_weather("Delft")
+    weather_day = WeatherRating(data)
