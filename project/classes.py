@@ -1,5 +1,6 @@
-from datetime import timedelta
+from datetime import timedelta, date, datetime
 import pickle
+import calendar
 
 
 class Task:
@@ -26,9 +27,9 @@ class Task:
             # print(start_time <= end_time, "start_time <= end_time")
             # print(duration)
             if all([isinstance(start_time, timedelta), isinstance(end_time, timedelta)
-                    , isinstance(from_g_cal, bool), timedelta(hours=0) <= start_time < timedelta(days=1)
-                    , timedelta(hours=0) <= end_time < timedelta(days=1), isinstance(description, str)
-                    , start_time <= end_time]):
+                       , isinstance(from_g_cal, bool), timedelta(hours=0) <= start_time < timedelta(days=1)
+                       , timedelta(hours=0) <= end_time < timedelta(days=1), isinstance(description, str)
+                       , start_time <= end_time]):
                 self.start_time = start_time
                 self.end_time = end_time
                 self.priority = priority
@@ -74,7 +75,7 @@ class TaskList:
                         i = 0
                         while new_task.start_time > task_list[i].start_time:
                             i += 1
-                        if not self.overlap(new_task, task_list[i]) and not self.overlap(new_task, task_list[i-1]):
+                        if not self.overlap(new_task, task_list[i]) and not self.overlap(new_task, task_list[i - 1]):
                             self.task_list_dict[task_date].insert(i, new_task)
                         else:
                             print(f"The time of the task you entered overlapped with another task\nTask was not added.")
@@ -196,3 +197,34 @@ class TaskList:
     def overlap(task1, task2):
         return max(task1.start_time, task2.start_time) < min(
             task1.end_time, task2.end_time)
+
+
+class WeatherRating:
+    def __init__(self, data):
+        '''
+        Really easy sorting system for the weather during one day. If it rains then it gets a negative value because
+        this is just bad weather to go outside. Otherwise it gets rated with a parabolic function with the centre at
+        the ideal temperature to go outside (now chosen at 294 degrees kelvin). This could of course be more elegant,
+        but that lies beyond the scope of this project. You can access the day_rating for the Unix timestamps sorted,
+        alongside their rating.
+        :param data: the data you get from the api
+        '''
+        self.day_rating = []
+        for entry in data["list"]:
+            temp = entry["main"]["feels_like"]
+            perfect_temp = 294
+            rain = entry["weather"][0]['main']
+            weather_time = entry['dt']
+            today = date.today().isoformat() + 'T23:59:59.00'
+            unix_today = calendar.timegm(datetime.strptime(today, "%Y-%m-%dT%H:%M:%S.%f").timetuple())
+            if weather_time < unix_today:
+                if rain == "Rain":
+                    rating = -1
+                    time_list = [weather_time, rating]
+                    self.day_rating.append(time_list)
+                else:
+                    rating = -0.01 * (temp - perfect_temp) * (temp - perfect_temp) + 50
+                    time_list = [weather_time, rating]
+                    self.day_rating.append(time_list)
+
+        self.day_rating.sort(key=lambda row: (row[1]), reverse=True)
