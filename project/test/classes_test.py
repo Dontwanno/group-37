@@ -15,9 +15,9 @@ def test_task():
 
 
 def test_task_exception():
-    bad_task = Task(100, 200, 1, 100, True)
-    with pytest.raises(AttributeError):
-        bad_task.start_time
+    with pytest.raises(TypeError):
+        Task(100, 200, 1, 100, True)
+
 
 
 def test_task_list_add_task():

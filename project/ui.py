@@ -26,19 +26,27 @@ def new_task(task_list, start_end):
                                        minutes=start % 100)
                 end_time = timedelta(hours=end // 100,
                                      minutes=end % 100)
-                # Add task to the task list
-                task_list.add_task(Task(start_time, end_time, None, None, description, False), date.today())
+                if is_valid_task(description, False, start, end):
+                    # Add task to the task list
+                    task_list.add_task(Task(start_time, end_time, None, None, description, False), date.today())
+                else:
+                    raise ValueError
             elif answer == "no":
                 description = input("Description: ")
                 priority = int(input("Priority: "))
-                task_length = timedelta(minutes=int(input("Task length in minutes: ")))
+                task_length = int(input("Task length in minutes: "))
+                task_length_delta = timedelta(minutes=task_length)
                 # Fit new task
-                task_list.fit_task(Task(timedelta(0), timedelta(0), task_length, priority, description, False), start_end, date.today())
+                if is_valid_task(description, False, duration=task_length, priority=1):
+                    task_list.fit_task(Task(timedelta(0), timedelta(0), task_length_delta,
+                                            priority, description, False), start_end, date.today())
+                else:
+                    raise ValueError
 
     except ValueError:
         # if input was not finished, give message and return old task list
-        print("Time must be valid and in integer format e.g. 8:45 = 845, 20:15 = 2015.")
-        print("Try again.")
+        print("Time must be valid and in integer format e.g. 8:45 = 845, 20:15 = 2015.\n"
+              "Priority must be integer. Task length must be in minutes and be less than 1440 (24 hours) ")
         return
     # if everything went smooth, return
     # print("Task stored successfully")
@@ -132,3 +140,16 @@ def remove_task(task_list):
         else:
             print("Please enter 'yes' or 'no'")
         return
+
+def is_valid_task(description, from_g_cal, start=0, end=0, duration=1, priority=1):
+    return all(
+        [
+            0 <= start < 2400 and start % 100 < 60,
+            start <= end,
+            0 <= end < 2400 and end % 100 < 60,
+            0 < duration < 2400,
+            isinstance(priority, int),
+            isinstance(description, str),
+            isinstance(from_g_cal, bool),
+            ]
+    )

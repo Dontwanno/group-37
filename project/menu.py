@@ -1,16 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# title           :Simple Python Menu
-# description     :Template for a custom scripting menu
-# author          :@cortesjorgea
-# date            :10/2018
-# updated         :04/2020
-# version         :2.0
-# usage           :simple_python_menu.py
-# notes           :Update section USER CONFIG dicts and reimplement methods
-#                 of main_menu and view_tasks classes at BACKEND section.
-# python_version  :3.8.0
-# =======================================================================
 import sys
 from datetime import date, timedelta
 import colorama
@@ -19,17 +6,29 @@ from classes import Task, TaskList
 from apis import get_google_calendar
 
 task_list = TaskList()
-task_list.add_task(Task(timedelta(hours=8, minutes=45), timedelta(hours=10, minutes=30), None, 1, "Walk my dog", False), date.today())
-task_list.add_task(Task(timedelta(hours=10, minutes=30), timedelta(hours=13, minutes=45), None, 1, "Meeting with SEM boys", False), date.today())
-task_list.add_task(Task(timedelta(hours=13, minutes=45), timedelta(hours=15, minutes=30), None, 1, "Do my homework", False), date.today())
-task_list.add_task(Task(timedelta(hours=15, minutes=45), timedelta(hours=18, minutes=00), None, 1, "Crying session", False), date.today())
-task_list.add_task(Task(timedelta(hours=15, minutes=45), timedelta(hours=18, minutes=00), None, 1, "Crying session", False), date.today() + timedelta(days=1))
-
+task_list.add_task(
+    Task(timedelta(hours=8, minutes=45), timedelta(hours=10, minutes=30), None,
+         1, "Walk my dog", False), date.today())
+task_list.add_task(
+    Task(timedelta(hours=10, minutes=30), timedelta(hours=13, minutes=45),
+         None, 1, "Meeting with SEM boys", False), date.today())
+task_list.add_task(
+    Task(timedelta(hours=13, minutes=45), timedelta(hours=15, minutes=30),
+         None, 1, "Do my homework", False), date.today())
+task_list.add_task(
+    Task(timedelta(hours=15, minutes=45), timedelta(hours=18, minutes=00),
+         None, 1, "Crying session", False), date.today())
+task_list.add_task(
+    Task(timedelta(hours=15, minutes=45), timedelta(hours=18, minutes=00),
+         None, 1, "Crying session", False),
+    date.today() + timedelta(days=1))
 
 # Get current tasks from Google
+
 start, end, description = get_google_calendar()
 for i in range(len(start)):
-    task_list.add_task(Task(start, end, description, True))
+    task_list.add_task(Task(start, end, None, None, description, True),
+                       date.today())
 start_end = [800, 2000]
 
 colorama.init()  # Color init for Windows
@@ -58,11 +57,7 @@ C2 = colors["other_menus"]
 PROGRAM_TITLE = "WorkValve"
 
 # Fill the options as needed.
-main_menu_colors = {
-    "ct": CT,
-    "cs": CS,
-    "opt": C1
-}
+main_menu_colors = {"ct": CT, "cs": CS, "opt": C1}
 main_menu_options = {
     "title": "Main menu",
     "1": "Add/Remove tasks",
@@ -71,11 +66,7 @@ main_menu_options = {
     "0": "Quit (or use CNTRL+C)",
 }
 
-view_tasks_colors = {
-    "ct": CT,
-    "cs": CS,
-    "opt": C2
-}
+view_tasks_colors = {"ct": CT, "cs": CS, "opt": C2}
 view_tasks_options = {
     "title": "View tasks",
     "1": "View tasks ",
@@ -83,11 +74,7 @@ view_tasks_options = {
     "0": "Quit (or use CNTRL+C)",
 }
 
-add_tasks_colors = {
-    "ct": CT,
-    "cs": CS,
-    "opt": C2
-}
+add_tasks_colors = {"ct": CT, "cs": CS, "opt": C2}
 add_tasks_options = {
     "title": "Add/Remove tasks",
     "1": "Add task",
@@ -96,11 +83,7 @@ add_tasks_options = {
     "0": "Quit (or use CNTRL+C)",
 }
 
-settings_colors = {
-    "ct": CT,
-    "cs": CS,
-    "opt": C2
-}
+settings_colors = {"ct": CT, "cs": CS, "opt": C2}
 settings_options = {
     "title": "Settings",
     "1": "Change start and end time of day",
@@ -144,55 +127,57 @@ def sigint_handler():
 #      ACTIONS
 # =======================
 
+
 # Menu template
 class MenuTemplate:
     def __init__(self, options, colours):
-        '''
+        """
         This is the initializing function of the class that determines the template of the menu,
         setting the right colors for the right options.
         :param options: The different options the menu has.
         :param colours: The different colors the options should have.
-        '''
+        """
         self.menu_width = 50  # Width in characters of the printed menu
         self.options = options
         self.colors = colours
-        self.method_dict = {"1": self.method_1,
-                            "2": self.method_2,
-                            "3": self.method_3,
-                            "4": self.method_4,
-                            "5": self.method_5,
-                            "a": self.method_a,
-                            "s": self.method_s,
-                            "d": self.method_d,
-                            "e": self.method_e,
-                            "f": self.method_f,
-                            "0": self.method_0
-                            }
+        self.method_dict = {
+            "1": self.method_1,
+            "2": self.method_2,
+            "3": self.method_3,
+            "4": self.method_4,
+            "5": self.method_5,
+            "a": self.method_a,
+            "s": self.method_s,
+            "d": self.method_d,
+            "e": self.method_e,
+            "f": self.method_f,
+            "0": self.method_0
+        }
 
     # =======================
     #      Menu prints
     # =======================
 
     def create_menu_line(self, letter, color, length, text):
-        '''
+        """
         This definition creates 1 user option line in the menu.
         :param letter: The letter that corresponts to the option of that line
         :param color: the color of the line
         :param length: the length of the line
         :param text: The text of the line
         :return: The data of a line in the menu.
-        '''
+        """
         menu = color + " [" + letter + "] " + text
         line = " " * (length - len(menu))
         return menu + line + CC
 
     def create_menu(self, size):
-        '''
+        """
         This definition creates the menu. The option lines are set in the
         create_menu_line definition.
         :param size: the size of the menu
         :return: Prints the menu
-        '''
+        """
         line = self.colors["ct"] + " " + PROGRAM_TITLE
         line += " " * (size - len(PROGRAM_TITLE) - 6)
         line += CC
@@ -203,7 +188,9 @@ class MenuTemplate:
         print(line)  # Subtitle
         for key in self.options:
             if key != "title":
-                print(self.create_menu_line(key, self.colors["opt"], size, self.options[key]))
+                print(
+                    self.create_menu_line(key, self.colors["opt"], size,
+                                          self.options[key]))
 
     def print_menu(self):
         self.create_menu(self.menu_width)
@@ -212,11 +199,11 @@ class MenuTemplate:
     #      Action calls
     # =======================
     def action(self, choice):
-        '''
+        """
         This definition records the choice of the user and acts accordingly
         :param choice: The choice of the user
         :return: The action corresponding to the action of the user.
-        '''
+        """
         if choice in self.method_dict:
             self.method_dict[choice]()
         elif choice == "":
@@ -267,11 +254,12 @@ class MenuTemplate:
 
 # Create here custom actions.
 
+
 class MainMenu(MenuTemplate):
-    '''
+    """
     This is the main menu. Option 1 lets the user go to the add_tasks part of the menu.
     Option 2 lets them display their schedule and option 3 lets them go to the settings menu.
-    '''
+    """
     def method_1(self):
         MenuHandler.current_menu = "add_tasks"
 
@@ -283,11 +271,11 @@ class MainMenu(MenuTemplate):
 
 
 class AddTasks(MenuTemplate):
-    '''
+    """
     This class is the menu part where the user can add a task.
     Option 1 is entering a new task. Option 2 is removing a task and option 3 lets
     the user return to the main menu.
-    '''
+    """
     def method_1(self):
         new_task(task_list, start_end)
 
@@ -299,10 +287,10 @@ class AddTasks(MenuTemplate):
 
 
 class ViewTasks(MenuTemplate):
-    '''
+    """
     This class describes the viewtasks part of the menu.
     option 1 lets the user display their schedule, option 2 lets them return to the main menu.
-    '''
+    """
     def method_1(self):
         display_schedule(task_list)
 
@@ -311,19 +299,20 @@ class ViewTasks(MenuTemplate):
 
 
 class Settings(MenuTemplate):
-    '''
+    """
     This class describes the settings menu, with option 1 letting
     the user enter the start and end time of their day, option 2 showing
     the current start and end time of their day and option 3 letting them return to the main menu.
-    '''
+    """
     def method_1(self):
         set_start_end_time(start_end)
 
     def method_2(self):
         start_time = str(start_end[0])
         end_time = str(start_end[1])
-        print(f"Your start time is: {start_time[:2]}:{start_time[2:]} and your end time is:"
-              f" {str(end_time)[:2]}:{end_time[2:]}")
+        print(
+            f"Your start time is: {start_time[:2]}:{start_time[2:]} and your end time is:"
+            f" {str(end_time)[:2]}:{end_time[2:]}")
 
     def method_3(self):
         TaskList.read_save_file(task_list)
@@ -343,24 +332,27 @@ class Settings(MenuTemplate):
 
 # set initial menu
 
+
 class MenuHandler:
     current_menu = "main_menu"
 
     def __init__(self):
-        '''
+        """
         initializing function of the menu handler. This handles in what
         menu the user currently resides in and lets the user change in what menu it wants to go.
-        '''
-        self.menu_dict = {"main_menu": MainMenu(main_menu_options, main_menu_colors),
-                          "add_tasks": AddTasks(add_tasks_options, add_tasks_colors),
-                          "view_tasks": ViewTasks(view_tasks_options, view_tasks_colors),
-                          "settings": Settings(settings_options, settings_colors)}
+        """
+        self.menu_dict = {
+            "main_menu": MainMenu(main_menu_options, main_menu_colors),
+            "add_tasks": AddTasks(add_tasks_options, add_tasks_colors),
+            "view_tasks": ViewTasks(view_tasks_options, view_tasks_colors),
+            "settings": Settings(settings_options, settings_colors)
+        }
 
     def menu_execution(self):
-        '''
+        """
         This function shows the current menu and asks what the user wants to do.
         The user can in this way change what menu he will be in.
-        '''
+        """
 
         self.menu_dict[MenuHandler.current_menu].print_menu()
         choice = input("Please enter what you want to do: ")

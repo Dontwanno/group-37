@@ -16,16 +16,6 @@ class Task:
         :param from_g_cal: Whether the origin of task is g cal, type bool
         """
         try:
-            # print(start_time, isinstance(start_time, timedelta), "isinstance(start_time, timedelta)")
-            # print(isinstance(end_time, timedelta), "isinstance(end_time, timedelta)")
-            # print(isinstance(from_g_cal, bool), "isinstance(from_g_cal, bool)")
-            # print(timedelta(hours=0) <= start_time < timedelta(days=1),
-            #       "timedelta(hours=0) < start_time < timedelta(days=1)")
-            # print(timedelta(hours=0) <= end_time < timedelta(days=1),
-            #       "timedelta(hours=0) < end_time < timedelta(days=1),")
-            # print(isinstance(description, str), "isinstance(description, str)")
-            # print(start_time <= end_time, "start_time <= end_time")
-            # print(duration)
             if all([isinstance(start_time, timedelta), isinstance(end_time, timedelta)
                        , isinstance(from_g_cal, bool), timedelta(hours=0) <= start_time < timedelta(days=1)
                        , timedelta(hours=0) <= end_time < timedelta(days=1), isinstance(description, str)
@@ -58,41 +48,34 @@ class TaskList:
         :param task_date: Date-key to the dictionary for the list of tasks on that day
         :param new_task: The new task of class Task
         """
-        try:
-            if isinstance(new_task, Task):
-                # If the date already exists, use the date of that task list
-                # Else create task list for that date
-                if task_date in self.task_list_dict:
-                    task_list = self.task_list_dict[task_date]
-                else:
-                    self.task_list_dict[task_date] = []
-                    task_list = self.task_list_dict[task_date]
+        # If the date already exists, use the date of that task list
+        # Else create task list for that date
+        if task_date in self.task_list_dict:
+            task_list = self.task_list_dict[task_date]
+        else:
+            self.task_list_dict[task_date] = []
+            task_list = self.task_list_dict[task_date]
 
-                # Make sure that task_list is not empty
-                # If new task is before the latest task, insert it on the correct spot. Else put it last
-                if task_list:
-                    if new_task.start_time < task_list[-1].start_time:
-                        i = 0
-                        while new_task.start_time > task_list[i].start_time:
-                            i += 1
-                        if not self.overlap(new_task, task_list[i]) and not self.overlap(new_task, task_list[i - 1]):
-                            self.task_list_dict[task_date].insert(i, new_task)
-                        else:
-                            print(f"The time of the task you entered overlapped with another task\nTask was not added.")
-                        return
-                    else:
-                        if self.overlap(new_task, task_list[-1]):
-                            print(
-                                "The task you entered overlaps with the last task in the list"
-                            )
-                        else:
-                            task_list.append(new_task)
+        # Make sure that task_list is not empty
+        # If new task is before the latest task, insert it on the correct spot. Else put it last
+        if task_list:
+            if new_task.start_time < task_list[-1].start_time:
+                i = 0
+                while new_task.start_time > task_list[i].start_time:
+                    i += 1
+                if not self.overlap(new_task, task_list[i]) and not self.overlap(new_task, task_list[i - 1]):
+                    self.task_list_dict[task_date].insert(i, new_task)
+                else:
+                    print("The time of the task you entered overlapped with another task\nTask was not added.")
+                return
+            else:
+                if self.overlap(new_task, task_list[-1]):
+                    print("The task you entered overlaps with the last task in the list")
                 else:
                     task_list.append(new_task)
-            else:
-                raise TypeError
-        except TypeError:
-            print("Task is not off class Task.")
+        else:
+            task_list.append(new_task)
+
 
     def fit_task(self, new_task, start_end, task_date):
         """
@@ -101,67 +84,61 @@ class TaskList:
         :param new_task: The new task of class Task
         :param start_end: List of start [0] and end [1] times
         """
-        try:
-            if isinstance(new_task, Task):
-                if task_date in self.task_list_dict:
-                    task_list = self.task_list_dict[task_date]
+        if task_date in self.task_list_dict:
+            task_list = self.task_list_dict[task_date]
+        else:
+            self.task_list_dict[task_date] = []
+            task_list = self.task_list_dict[task_date]
+
+        start_day = timedelta(hours=start_end[0] // 100,
+                              minutes=start_end[0] % 100)
+        end_day = timedelta(hours=start_end[1] // 100,
+                            minutes=start_end[1] % 100)
+        if self.task_list_dict[task_date]:
+            time_slots = []
+            tasks_start_end = [[task.start_time, task.end_time]
+                               for task in task_list]
+            tasks_start_end.insert(0, [end_day, start_day])
+            # print(tasks_start_end)
+            for i, task in enumerate(tasks_start_end):
+                if i + 1 < len(tasks_start_end):
+                    free_time = tasks_start_end[i + 1][0] - task[1]
+                    time_slots.append([free_time, task[1]])
                 else:
-                    self.task_list_dict[task_date] = []
-                    task_list = self.task_list_dict[task_date]
+                    time_slots.append(
+                        [tasks_start_end[0][0] - task[1], task[1]])
+            # print(time_slots)
+            # slots in time_slots have duration[0] and start_time[1]
 
-                start_day = timedelta(hours=start_end[0] // 100,
-                                      minutes=start_end[0] % 100)
-                end_day = timedelta(hours=start_end[1] // 100,
-                                    minutes=start_end[1] % 100)
-                if self.task_list_dict[task_date]:
-                    time_slots = []
-                    tasks_start_end = [[task.start_time, task.end_time]
-                                       for task in task_list]
-                    tasks_start_end.insert(0, [end_day, start_day])
-                    # print(tasks_start_end)
-                    for i, task in enumerate(tasks_start_end):
-                        if i + 1 < len(tasks_start_end):
-                            free_time = tasks_start_end[i + 1][0] - task[1]
-                            time_slots.append([free_time, task[1]])
-                        else:
-                            time_slots.append(
-                                [tasks_start_end[0][0] - task[1], task[1]])
-                    # print(time_slots)
-                    # slots in time_slots have duration[0] and start_time[1]
+            valid_slots = [
+                slot for slot in time_slots if new_task.duration <= slot[0]
+            ]
+            if valid_slots:
+                smallest_slot = min(valid_slots)
+                self.add_task(
+                    Task(
+                        smallest_slot[1],
+                        smallest_slot[1] + new_task.duration,
+                        new_task.duration.seconds,
+                        new_task.priority,
+                        new_task.description,
+                        False
+                    ), task_date)
 
-                    valid_slots = [
-                        slot for slot in time_slots if new_task.duration <= slot[0]
-                    ]
-                    if valid_slots:
-                        smallest_slot = min(valid_slots)
-                        self.add_task(
-                            Task(
-                                smallest_slot[1],
-                                smallest_slot[1] + new_task.duration,
-                                new_task.duration.seconds,
-                                new_task.priority,
-                                new_task.description,
-                                False
-                            ), task_date)
-
-                    else:
-                        self.fit_task(new_task, start_end, task_date + timedelta(days=1))
-                        # try again to fit task in next day
-                # If the day is empty, add the task to the start of the day
-                else:
-                    self.add_task(
-                        Task(
-                            start_day,
-                            start_day + new_task.duration,
-                            new_task.duration.seconds,
-                            new_task.priority,
-                            new_task.description,
-                            False
-                        ), task_date)
             else:
-                raise TypeError
-        except TypeError:
-            print("Task is not off class Task.")
+                self.fit_task(new_task, start_end, task_date + timedelta(days=1))
+                # try again to fit task in next day
+        # If the day is empty, add the task to the start of the day
+        else:
+            self.add_task(
+                Task(
+                    start_day,
+                    start_day + new_task.duration,
+                    new_task.duration.seconds,
+                    new_task.priority,
+                    new_task.description,
+                    False
+                ), task_date)
 
     def remove_task(self, removed_task):
         """
@@ -201,14 +178,14 @@ class TaskList:
 
 class WeatherRating:
     def __init__(self, data):
-        '''
+        """
         Really easy sorting system for the weather during one day. If it rains then it gets a negative value because
         this is just bad weather to go outside. Otherwise it gets rated with a parabolic function with the centre at
         the ideal temperature to go outside (now chosen at 294 degrees kelvin). This could of course be more elegant,
         but that lies beyond the scope of this project. You can access the day_rating for the Unix timestamps sorted,
         alongside their rating.
         :param data: the data you get from the api
-        '''
+        """
         self.day_rating = []
         for entry in data["list"]:
             temp = entry["main"]["feels_like"]

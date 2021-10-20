@@ -1,10 +1,10 @@
 import unittest
 from textwrap import dedent
 
-import mock
-from factorial_calc import ask_factorial, calc_factorial
 from contextlib import redirect_stdout
 from io import StringIO
+import mock
+from example.factorial_calc import ask_factorial, calc_factorial
 
 # This class is used as a helper for the unit tests.
 # It is needed since our program heavily depends on input/output behaviour.
@@ -64,4 +64,3 @@ class TestSuite(unittest.TestCase):
             self.assertEqual(dedent("""\
                 Enter a number to find its factorial: 
                 result: 6\n"""), out.getvalue())
-
